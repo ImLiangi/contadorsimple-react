@@ -1,30 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SecondsCounter from "./SecondsCounter";
 
-let seconds = 0;
-
 const Home = () => {
+    const [seconds, setSeconds] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setSeconds(prev => {
+                if ((prev + 1) % 60 === 0) {
+                    alert(`¡Han pasado ${(prev + 1) / 60} minuto(s)!`);
+                }
+                return prev + 1;
+            });
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <div className="text-center mt-5">
             <SecondsCounter seconds={seconds} />
         </div>
     );
 };
-
-const root = document.getElementById("root");
-import ReactDOM from "react-dom/client";
-const rootInstance = ReactDOM.createRoot(root);
-
-setInterval(() => {
-    seconds++;
-    if (seconds % 60 === 0) {
-        alert(`¡Han pasado ${seconds / 60} minuto(s)!`);
-    }
-    rootInstance.render(
-        <React.StrictMode>
-            <Home />
-        </React.StrictMode>
-    );
-}, 1000);
 
 export default Home;
